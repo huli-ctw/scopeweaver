@@ -234,6 +234,7 @@ build_target() {
   GOOS="$goos" \
   GOARCH="$goarch" \
   go build \
+    -mod=vendor \
     -tags embedui \
     -trimpath \
     -ldflags "-s -w -buildid= -X main.version=${ARTEX_BUILD_VERSION}" \

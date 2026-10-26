@@ -9,6 +9,8 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+env:
+  GOFLAGS: -mod=vendor
 concurrency:
   group: e2e-${{ github.ref }}
   cancel-in-progress: true
@@ -48,7 +50,7 @@ jobs:
           (cd web && npm ci && npm run build:static)
           mkdir -p server/webui/dist
           rsync -a --delete web/out/ server/webui/dist/
-          go build -tags embedui -o "$RUNNER_TEMP/scopeweaver" ./cmd/artex
+          go build -mod=vendor -tags embedui -o "$RUNNER_TEMP/scopeweaver" ./cmd/artex
       - name: Install browser
         working-directory: e2e
         run: npm ci && npx playwright install --with-deps chromium

@@ -182,9 +182,12 @@ cd web && npm ci && npm run build:static && cd ..
 mkdir -p server/webui/dist
 cp -R web/out/. server/webui/dist/
 # 3) build (the embedui tag embeds the frontend)
-CGO_ENABLED=0 go build -tags embedui -o scopeweaver ./cmd/artex
+CGO_ENABLED=0 go build -mod=vendor -tags embedui -o scopeweaver ./cmd/artex
 ./start.sh
 ```
+
+Go module source, including the agent runtime, is committed under `vendor/`.
+`go build` and `go test` use that copy. With `vendor/` present they do not download modules.
 
 > The build source path stays `./cmd/artex` and the Go module stays `github.com/Autumn-27/artex`
 > for compatibility with upstream. Only the output binary is named `scopeweaver`.
@@ -315,7 +318,7 @@ cp -r <unpacked>/skills ./ && cp <unpacked>/scopeweaver ./
 git pull
 cd web && npm ci && npm run build:static && cd ..
 cp -r web/out server/webui/dist
-CGO_ENABLED=0 go build -tags embedui -o scopeweaver ./cmd/artex
+CGO_ENABLED=0 go build -mod=vendor -tags embedui -o scopeweaver ./cmd/artex
 # restart ./start.sh
 ```
 

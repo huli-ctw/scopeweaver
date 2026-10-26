@@ -37,7 +37,7 @@ set -euo pipefail
 printf 'go %s\n' "$*" >> calls.log
 case "$*" in
   version) printf 'go version fixture\n' ;;
-  'build -tags embedui -trimpath -o scopeweaver ./cmd/artex')
+  'build -mod=vendor -tags embedui -trimpath -o scopeweaver ./cmd/artex')
     [[ "${CGO_ENABLED:-}" == 0 ]]
     [[ -f server/webui/dist/index.html ]]
     ;;
@@ -76,7 +76,7 @@ run_installer() {
 assert_output() {
   [[ "$(cat "$fixture/server/webui/dist/index.html")" == "$INSTALL_FIXTURE_CONTENT" ]] || fail 'incorrect frontend output'
   [[ ! -e "$fixture/server/webui/dist/out" ]] || fail 'frontend output was nested under dist/out'
-  grep -Fxq 'go build -tags embedui -trimpath -o scopeweaver ./cmd/artex' "$fixture/calls.log" || fail 'embedded build did not run'
+  grep -Fxq 'go build -mod=vendor -tags embedui -trimpath -o scopeweaver ./cmd/artex' "$fixture/calls.log" || fail 'embedded build did not run'
   grep -Fxq start "$fixture/calls.log" || fail 'startup did not run'
 }
 

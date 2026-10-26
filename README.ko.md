@@ -179,9 +179,12 @@ cd web && npm ci && npm run build:static && cd ..
 mkdir -p server/webui/dist
 cp -R web/out/. server/webui/dist/
 # 3) 빌드 (embedui 태그가 프런트엔드를 내장)
-CGO_ENABLED=0 go build -tags embedui -o scopeweaver ./cmd/artex
+CGO_ENABLED=0 go build -mod=vendor -tags embedui -o scopeweaver ./cmd/artex
 ./start.sh
 ```
+
+Go 모듈 소스(에이전트 런타임 포함)는 `vendor/`에 커밋되어 있습니다.
+`vendor/`가 있으면 `go build`와 `go test`는 그 사본을 쓰며 모듈을 다운로드하지 않습니다.
 
 > 업스트림 호환을 위해 빌드 소스 경로는 `./cmd/artex`, Go 모듈은 `github.com/Autumn-27/artex`로
 > 유지합니다. 출력 바이너리 이름만 `scopeweaver`입니다.
@@ -313,7 +316,7 @@ cp -r <풀어낸_디렉터리>/skills ./ && cp <풀어낸_디렉터리>/scopewea
 git pull
 cd web && npm ci && npm run build:static && cd ..
 cp -r web/out server/webui/dist
-CGO_ENABLED=0 go build -tags embedui -o scopeweaver ./cmd/artex
+CGO_ENABLED=0 go build -mod=vendor -tags embedui -o scopeweaver ./cmd/artex
 # ./start.sh 재시작
 ```
 

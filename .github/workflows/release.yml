@@ -6,6 +6,8 @@ on:
 permissions:
   contents: write
   packages: write
+env:
+  GOFLAGS: -mod=vendor
 
 jobs:
   frontend:

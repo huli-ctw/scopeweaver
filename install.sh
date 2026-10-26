@@ -135,10 +135,10 @@ JSON
     ( cd web && npm ci && npm run build:static )
     mkdir -p server/webui && rm -rf server/webui/dist && cp -r web/out server/webui/dist
     info "$(msg 'Compiling the single binary with the frontend embedded…' '프런트엔드가 내장된 단일 바이너리를 컴파일합니다…')"
-    CGO_ENABLED=0 go build -tags embedui -trimpath -o scopeweaver ./cmd/artex
+    CGO_ENABLED=0 go build -mod=vendor -tags embedui -trimpath -o scopeweaver ./cmd/artex
   else
     warn "$(msg 'npm not found: building the backend WITHOUT the embedded frontend (run npm run dev for the frontend)' 'npm을 찾지 못함: 프런트엔드 미내장 백엔드를 빌드합니다 (프런트엔드는 따로 npm run dev)')"
-    CGO_ENABLED=0 go build -o scopeweaver ./cmd/artex
+    CGO_ENABLED=0 go build -mod=vendor -o scopeweaver ./cmd/artex
   fi
   ok "$(msg 'Build complete → ./scopeweaver' '컴파일 완료 → ./scopeweaver')"
 

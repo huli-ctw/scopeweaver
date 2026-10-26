@@ -13,11 +13,10 @@ ARG TARGETOS=linux
 ARG TARGETARCH
 ARG VERSION=dev
 WORKDIR /src
-COPY go.mod go.sum ./
-RUN go mod download
+# Module source is in vendor/. Do not download modules during the image build.
 COPY . .
 COPY --from=frontend /src/web/out/ ./server/webui/dist/
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -tags embedui -trimpath \
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -mod=vendor -tags embedui -trimpath \
     -ldflags "-s -w -X main.version=${VERSION}" -o /scopeweaver ./cmd/artex
 
 FROM python:3.12-slim-bookworm

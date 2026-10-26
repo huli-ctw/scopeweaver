@@ -28,10 +28,10 @@ update_local(){
     (cd web && npm ci && npm run build:static)
     mkdir -p server/webui/dist
     cp -R web/out/. server/webui/dist/
-    CGO_ENABLED=0 go build -tags embedui -trimpath -o scopeweaver ./cmd/artex
+    CGO_ENABLED=0 go build -mod=vendor -tags embedui -trimpath -o scopeweaver ./cmd/artex
   else
     info "$(msg 'npm unavailable: building backend only; run the frontend separately' 'npm이 없어 백엔드만 빌드합니다. 프런트엔드는 별도로 실행하세요')"
-    CGO_ENABLED=0 go build -o scopeweaver ./cmd/artex
+    CGO_ENABLED=0 go build -mod=vendor -o scopeweaver ./cmd/artex
   fi
   info "$(msg 'Built ./scopeweaver. Restart the running process to apply the update.' './scopeweaver 빌드 완료. 실행 중인 프로세스를 재시작하여 적용하세요.')"
 }
